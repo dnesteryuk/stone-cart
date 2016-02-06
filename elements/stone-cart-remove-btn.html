@@ -1,0 +1,29 @@
+<dom-module id="stone-cart-remove-btn">
+  <template>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'stone-cart-remove-btn',
+
+      listeners: {
+        tap: 'removeItem'
+      },
+
+      properties: {
+        item: {
+          type: Object
+        }
+      },
+
+      attached: function() {
+        this.cart = document.querySelector('stone-cart');
+      },
+
+      removeItem: function() {
+        this.cart.removeItem(this.item);
+      }
+    });
+  </script>
+</dom-module>

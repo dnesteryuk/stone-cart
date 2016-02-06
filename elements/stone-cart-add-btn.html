@@ -1,0 +1,29 @@
+<dom-module id="stone-cart-add-btn">
+  <template>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'stone-cart-add-btn',
+
+      listeners: {
+        tap: 'addItem'
+      },
+
+      properties: {
+        item: {
+          type: Object
+        }
+      },
+
+      attached: function() {
+        this.cart = document.querySelector('stone-cart');
+      },
+
+      addItem: function() {
+        this.cart.addItem(this.item);
+      }
+    });
+  </script>
+</dom-module>

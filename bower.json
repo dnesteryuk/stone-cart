@@ -1,0 +1,29 @@
+{
+  "name": "stone-cart",
+  "version": "0.0.1",
+  "authors": [
+    "Dmitriy Nesteryuk <dmitriy.nesteryuk@gmail.com>"
+  ],
+  "description": "An element providing a common logic for building a shopping cart",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "shopping",
+    "cart"
+  ],
+  "main": "stone-cart.html",
+  "license": "https://github.com/dnesteryuk/stone-cart/LICENSE.txt",
+  "homepage": "https://github.com/dnesteryuk/stone-cart",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "numbro-element": "~1.0.4"
+  }
+}

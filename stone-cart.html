@@ -1,0 +1,110 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="elements/stone-cart-add-btn.html">
+<link rel="import" href="elements/stone-cart-remove-btn.html">
+
+<!--
+An element providing mechanism to manage items of the shopping cart.
+It doesn't provide UI.
+
+Example:
+
+    <stone-cart items="{{items}}">
+      Total price: [[total]]
+
+      <template id="items" is="dom-repeat" items="{{items}}">
+        [[item.name]] [[item.price]]
+      </template>
+    </stone-cart>
+
+@demo demo/index.html
+-->
+
+<dom-module id="stone-cart">
+  <template>
+    <style>
+      :host {
+      }
+    </style>
+
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'stone-cart',
+
+      properties: {
+        /**
+         * List of items in the cart.
+         */
+        items: {
+          type:   Object,
+          notify: true,
+          value:  function() { return []; }
+        },
+
+        /**
+         * Total price of items in the cart.
+         */
+        total: {
+          type:     Number,
+          notify:   true,
+          readOnly: true,
+          computed: '_computeTotal(items, items.length)',
+          value:    0
+        },
+
+        /**
+         * When a cart is empty, this property is true. This property
+         * is used as an attribute of the element.
+         *
+         * Example:
+         *
+         *     <stone-cart disabled></stone-cart>
+         */
+        disabled: {
+          type:               Boolean,
+          value:              true,
+          reflectToAttribute: true
+        }
+      },
+
+      observers: [
+        '_updateState(items, items.length)'
+      ],
+
+      /**
+       * Adds a new item to the cart.
+       */
+      addItem: function(item) {
+        this.push('items', item);
+
+        this.fire('add-item', {item: item});
+      },
+
+      /**
+       * Removes an item from the cart.
+       */
+      removeItem: function(item) {
+        var index = this.items.indexOf(item);
+        this.splice('items', index, 1);
+
+        this.fire('remove-item', {item: item});
+      },
+
+      addButtonFor: function(item) {
+        document.querySelector('stone-cart-add-btn[data-id="' + item.id + '"]');
+      },
+
+      _computeTotal: function(items) {
+        return items.reduce(function(total, item) {
+          return total + item.price;
+        }, 0);
+      },
+
+      _updateState: function(count) {
+        this.set('disabled', (count == 0));
+      }
+    });
+  </script>
+</dom-module>
