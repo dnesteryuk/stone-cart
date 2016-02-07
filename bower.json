@@ -4,7 +4,7 @@
   "authors": [
     "Dmitriy Nesteryuk <dmitriy.nesteryuk@gmail.com>"
   ],
-  "description": "An element providing a common logic for building a shopping cart",
+  "description": "An element providing a logic for building a shopping cart",
   "keywords": [
     "web-component",
     "polymer",

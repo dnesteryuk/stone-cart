@@ -1,5 +1,20 @@
 <script src="btn-behavior.js"></script>
 
+<!--
+An element for removing an item from the cart. This element behaves like a wrapper for other elements providing a view. Hence, it can be used with any element you want.
+
+Example:
+
+    <stone-cart-remove-btn item='{"id":1}'>
+      <button>Remove from cart</button>
+    </stone-cart-remove-btn>
+
+    <stone-cart-remove-btn item='{"id":1}'>
+      <a href="#">Remove from cart</a>
+    </stone-cart-remove-btn>
+
+This element can exist outside of the stone-cart element.
+-->
 <dom-module id="stone-cart-remove-btn">
   <template>
     <content></content>

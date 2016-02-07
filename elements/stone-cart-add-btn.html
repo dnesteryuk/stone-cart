@@ -1,5 +1,20 @@
 <script src="btn-behavior.js"></script>
 
+<!--
+An element for adding an item to the cart. This element behaves like a wrapper for other elements providing a view. Hence, it can be used with any element you want.
+
+Example:
+
+    <stone-cart-add-btn item='{"id":1, "name":"Book", "price":10.5}'>
+      <button>Add to cart</button>
+    </stone-cart-add-btn>
+
+    <stone-cart-add-btn item='{"id":1, "name":"Book", "price":10.5}'>
+      <a href="#">Add to cart</a>
+    </stone-cart-add-btn>
+
+This element can exist outside of the stone-cart element.
+-->
 <dom-module id="stone-cart-add-btn">
   <template>
     <content></content>

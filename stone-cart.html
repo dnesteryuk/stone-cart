@@ -3,8 +3,7 @@
 <link rel="import" href="elements/stone-cart-remove-btn.html">
 
 <!--
-An element providing mechanism to manage items of the shopping cart.
-It doesn't provide UI.
+It is an element providing a common logic for adding items to a shopping cart and managing them within a shopping cart.
 
 Example:
 
@@ -12,9 +11,37 @@ Example:
       Total price: [[total]]
 
       <template id="items" is="dom-repeat" items="{{items}}">
-        [[item.name]] [[item.price]]
+        [[item.name]] $[[item.price]]
+
+        <stone-cart-remove-btn item="{{item}}">
+          <button>Remove from my cart</button>
+        </stone-cart-remove-btn>
+
       </template>
     </stone-cart>
+
+    <stone-cart-add-btn item='{"id": 1, "name": "Apple", "price": "1"}'>
+      <button>Add apple to my cart</button>
+    </stone-cart-add-btn>
+
+This element fires 2 types of events:
+
+ - add-item - a new item is added to the cart.
+ - remove-item - an item is removed from the cart.
+
+Example:
+
+    <script>
+      var cart = document.querySelector('stone-cart');
+
+      car.addEventListener('add-item', function(e) {
+        e.detail.item // an added item to the cart
+      });
+
+      car.addEventListener('remove-item', function(e) {
+        e.detail.item // a removed item from the cart
+      });
+    </script>
 
 @demo demo/index.html
 -->
@@ -36,6 +63,17 @@ Example:
       properties: {
         /**
          * List of items in the cart.
+         * Each item has to have the id and price properties. Other properties
+         * can be used without any restrictions.
+         *
+         * Example:
+         *
+         *     [{
+         *       id: 1,
+         *       price: 10,
+         *       name: 'Book',
+         *       img_src: '/images/book.png'
+         *     }]
          */
         items: {
           type:   Object,
@@ -101,33 +139,42 @@ Example:
       },
 
       /**
-       * Returns an Array with elements for adding a given item to the cart.
+       * Returns an Array of nodes representing the add buttons of a certain item.
        */
       allAddBtnsOf: function(itemId) {
         return this._btns.add[itemId];
       },
 
       /**
-       * Returns an Array with elements for removing a given item from the cart.
+       * Returns an Array of nodes representing the remove buttons of a certain item.
        */
       allRemoveBtnsOf: function(itemId) {
         return this._btns.remove[itemId];
       },
 
       /**
-       * Notifies a cart about new cart button.
+       * Registers a cart button related to a certain item.
+       * Registration happens automatically for the add and remove buttons.
+       *
+       * Example:
+       *
+       *     <stone-cart-add-btn></stone-cart-add-btn>
+       *     <stone-cart-remove-btn></stone-cart-remove-btn>
+       *
+       * These buttons will be automatically registered.
        */
-      registerBtn: function(type, itemId, btn) {
-        var scope = this._btnsOf(type, itemId);
+      registerBtn: function(kind, itemId, btn) {
+        var scope = this._btnsOf(kind, itemId);
 
         scope.push(btn);
       },
 
       /**
-       * Notifies a cart about removed cart button.
+       * Unregisters a cart button related to a certain item.
+       * Unregistration happens automatically for the add and remove buttons.
        */
-      unregisterBtn: function(type, itemId, btn) {
-        var scope = this._btnsOf(type, itemId);
+      unregisterBtn: function(kind, itemId, btn) {
+        var scope = this._btnsOf(kind, itemId);
         var index = scope.indexOf(btn);
 
         scope.splice(index, 1);
@@ -143,8 +190,8 @@ Example:
         this.set('disabled', (count == 0));
       },
 
-      _btnsOf: function(type, itemId) {
-        var scope = this._btns[type];
+      _btnsOf: function(kind, itemId) {
+        var scope = this._btns[kind];
         scope[itemId] = (scope[itemId] || []);
         return scope[itemId];
       }
