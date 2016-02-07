@@ -73,6 +73,14 @@ Example:
         '_updateState(items, items.length)'
       ],
 
+      ready: function() {
+        // Cache of cart buttons
+        this._btns = {
+          add:    {},
+          remove: {}
+        };
+      },
+
       /**
        * Adds a new item to the cart.
        */
@@ -92,8 +100,37 @@ Example:
         this.fire('remove-item', {item: item});
       },
 
-      addButtonFor: function(item) {
-        document.querySelector('stone-cart-add-btn[data-id="' + item.id + '"]');
+      /**
+       * Returns an Array with elements for adding a given item to the cart.
+       */
+      queryForAddBtnsOf: function(itemId) {
+        return this._btns.add[itemId];
+      },
+
+      /**
+       * Returns an Array with elements for removing a given item from the cart.
+       */
+      queryForRemoveBtnsOf: function(itemId) {
+        return this._btns.remove[itemId];
+      },
+
+      /**
+       * Notifies a cart about new cart button.
+       */
+      registerBtn: function(type, itemId, btn) {
+        var scope = this._btnsOf(type, itemId);
+
+        scope.push(btn);
+      },
+
+      /**
+       * Notifies a cart about removed cart button.
+       */
+      unregisterBtn: function(type, itemId, btn) {
+        var scope = this._btnsOf(type, itemId);
+        var index = scope.indexOf(btn);
+
+        scope.splice(index, 1);
       },
 
       _computeTotal: function(items) {
@@ -104,6 +141,12 @@ Example:
 
       _updateState: function(count) {
         this.set('disabled', (count == 0));
+      },
+
+      _btnsOf: function(type, itemId) {
+        var scope = this._btns[type];
+        scope[itemId] = (scope[itemId] || []);
+        return scope[itemId];
       }
     });
   </script>

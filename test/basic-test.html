@@ -24,6 +24,18 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="CartWithBtns">
+      <template>
+        <stone-cart>
+          <stone-cart-add-btn item='{"id":1}'>Add to cart</stone-cart-add-btn>
+          <stone-cart-add-btn item='{"id":1}'>Add to cart</stone-cart-add-btn>
+          <stone-cart-remove-btn item='{"id":1}'>Remove from cart</stone-cart-remove-btn>
+
+          <stone-cart-add-btn item='{"id":2}'>Add to cart</stone-cart-add-btn>
+        </stone-cart>
+      </template>
+    </test-fixture>
+
     <script>
       suite('<stone-cart>', function() {
         var cart;
@@ -36,11 +48,11 @@
           });
 
           test('calculates a total', function() {
-            expect(cart.total).to.be.eql(5);
+            expect(cart.total).to.equal(5);
           });
 
           test('enables a cart', function() {
-            expect(cart.hasAttribute('disabled')).to.be.eql(false);
+            expect(cart.hasAttribute('disabled')).to.equal(false);
           });
         });
 
@@ -54,13 +66,13 @@
           test('adds an item to the cart', function() {
             cart.addItem(newItem);
 
-            expect(cart.items.length).to.be.eq(3);
+            expect(cart.items.length).to.equal(3);
           });
 
           test('recalculates a total', function() {
             cart.addItem(newItem);
 
-            expect(cart.total).to.be.eql(20);
+            expect(cart.total).to.equal(20);
           });
 
           test('fires the "add-item" event', function() {
@@ -68,7 +80,7 @@
               cart.addEventListener('add-item', function(e) {
                 var resp = e.detail;
 
-                expect(resp.item).to.be.eql(newItem);
+                expect(resp.item).to.equal(newItem);
 
                 resolve();
               });
@@ -88,7 +100,7 @@
           test('removes an item from the cart', function() {
             cart.removeItem(itemToBeRemoved);
 
-            expect(cart.items.length).to.be.eq(1)
+            expect(cart.items.length).to.equal(1)
           });
 
           test('recalculates a total', function() {
@@ -102,7 +114,7 @@
               cart.addEventListener('remove-item', function(e) {
                 var resp = e.detail;
 
-                expect(resp.item).to.be.eql(itemToBeRemoved);
+                expect(resp.item).to.equal(itemToBeRemoved);
 
                 resolve();
               });
@@ -119,7 +131,33 @@
           });
 
           test('disables a cart', function() {
-            expect(cart.hasAttribute('disabled')).to.be.eql(true);
+            expect(cart.hasAttribute('disabled')).to.equal(true);
+          });
+        });
+
+        suite('when cart buttons exist', function() {
+          setup(function() {
+            cart = fixture('CartWithBtns');
+          });
+
+          test('allows to get all add buttons of a specific item', function() {
+            expect(cart.queryForAddBtnsOf(1)).to.have.length(2);
+          });
+
+          test('allows to get all remove buttons of a specific item', function() {
+            expect(cart.queryForRemoveBtnsOf(1)).to.have.length(1);
+          });
+        });
+
+        suite('when removing one of cart buttons', function() {
+          setup(function() {
+            cart = fixture('CartWithBtns');
+
+            cart.querySelector('stone-cart-add-btn').remove();
+          });
+
+          test('the cart forgets about that button', function() {
+            expect(cart.queryForAddBtnsOf(1)).to.have.length(1);
           });
         });
       });

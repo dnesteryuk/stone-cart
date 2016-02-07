@@ -1,3 +1,5 @@
+<script src="btn-behavior.js"></script>
+
 <dom-module id="stone-cart-add-btn">
   <template>
     <content></content>
@@ -7,18 +9,18 @@
     Polymer({
       is: 'stone-cart-add-btn',
 
-      listeners: {
-        tap: 'addItem'
-      },
+      behaviors: [BtnBehavior],
 
       properties: {
-        item: {
-          type: Object
+        kind: {
+          type:     String,
+          readOnly: true,
+          value:    'add'
         }
       },
 
-      attached: function() {
-        this.cart = document.querySelector('stone-cart');
+      listeners: {
+        tap: 'addItem'
       },
 
       addItem: function() {
