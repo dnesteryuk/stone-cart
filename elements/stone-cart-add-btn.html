@@ -1,3 +1,20 @@
+<script src="btn-behavior.js"></script>
+
+<!--
+An element for adding an item to the cart. This element behaves like a wrapper for other elements providing the view. Hence, it can be used with any element you want.
+
+Example:
+
+    <stone-cart-add-btn item='{"id":1, "name":"Book", "price":10.5}'>
+      <button>Add to cart</button>
+    </stone-cart-add-btn>
+
+    <stone-cart-add-btn item='{"id":1, "name":"Book", "price":10.5}'>
+      <a href="#">Add to cart</a>
+    </stone-cart-add-btn>
+
+This element can exist outside of the stone-cart element.
+-->
 <dom-module id="stone-cart-add-btn">
   <template>
     <content></content>
@@ -7,20 +24,45 @@
     Polymer({
       is: 'stone-cart-add-btn',
 
-      listeners: {
-        tap: 'addItem'
-      },
+      behaviors: [BtnBehavior],
 
       properties: {
+        /**
+         * The item associated with the button.
+         * The given item will be passed to the cart.
+         * The item has to have at least the id and price properties.
+         *
+         * Example:
+         *
+         *     <stone-cart-add-button
+         *       item='{"id": 1, "price": 10, "name": "Apple"}'>
+         *     </stone-cart-add-button>
+         */
         item: {
           type: Object
+        },
+
+        /**
+         * Indicates the type of the button.
+         */
+        kind: {
+          type:     String,
+          readOnly: true,
+          value:    'add'
         }
       },
 
-      attached: function() {
-        this.cart = document.querySelector('stone-cart');
+      listeners: {
+        /**
+         * Calls the addItem method if the tap event is
+         * fired on the button.
+         */
+        tap: 'addItem'
       },
 
+      /**
+       * Adds the associated item to the cart.
+       */
       addItem: function() {
         this.cart.addItem(this.item);
       }

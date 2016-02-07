@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../stone-cart.html">
+  </head>
+  <body>
+
+    <test-fixture id="CartWithAddBtn">
+      <template>
+        <stone-cart>
+          <stone-cart-add-btn item='{"id":1}'>Add to cart</stone-cart-add-btn>
+        </stone-cart>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('<stone-cart>', function() {
+        var cart;
+
+        suite('basic usage', function() {
+          setup(function() {
+            cart = fixture('CartWithAddBtn');
+          });
+
+          test('the button exposes the id of the related item', function() {
+            expect(
+              cart.querySelector('stone-cart-add-btn').itemId
+            ).to.equal(1);
+          });
+        });
+
+
+        suite('when adding the item to the cart', function() {
+          setup(function() {
+            cart = fixture('CartWithAddBtn');
+            cart.addItem({id: 1});
+          });
+
+          test('the button is aware that its item is in the cart', function() {
+            expect(
+              cart.querySelector('stone-cart-add-btn').selected
+            ).to.equal(true);
+          });
+        });
+
+        suite('when the item is already in the cart', function() {
+          setup(function() {
+            cart = fixture('CartWithAddBtn');
+            cart.items = [{id: 1}];
+          });
+
+          test('the button is aware that its item is in the cart', function() {
+            expect(
+              cart.querySelector('stone-cart-add-btn').selected
+            ).to.equal(true);
+          });
+        });
+
+        suite('when removing the item from the cart', function() {
+          var item = {id: 1};
+
+          setup(function() {
+            cart = fixture('CartWithAddBtn');
+            cart.items = [item];
+
+            cart.removeItem(item);
+          });
+
+          test('the button is aware that its item is not in the cart anymore', function() {
+            expect(
+              cart.querySelector('stone-cart-add-btn').selected
+            ).to.equal(false);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

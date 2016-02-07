@@ -28,19 +28,41 @@
       suite('<stone-cart>', function() {
         var cart;
 
-        suite('when defining items for an empty cart', function() {
+        suite('when the cart is empty', function() {
           setup(function() {
             cart = fixture('EmptyCart');
+          });
 
+          test('disables the cart', function() {
+            expect(cart.hasAttribute('disabled')).to.equal(true);
+          });
+        });
+
+        suite('when defining items for the empty cart', function() {
+          setup(function() {
+            cart = fixture('EmptyCart');
+          });
+
+          test('calculates the total price', function() {
             cart.items = [{id: 1, price: 5}];
+
+            expect(cart.total).to.equal(5);
           });
 
-          test('calculates a total', function() {
-            expect(cart.total).to.be.eql(5);
+          test('enables the cart', function() {
+            cart.items = [{id: 1, price: 5}];
+
+            expect(cart.hasAttribute('disabled')).to.equal(false);
           });
 
-          test('enables a cart', function() {
-            expect(cart.hasAttribute('disabled')).to.be.eql(false);
+          test('fires the "reset" event', function() {
+            return new Promise(function(resolve, reject) {
+              cart.addEventListener('reset', function(e) {
+                resolve();
+              });
+
+              cart.items = [{id: 1, price: 5}];
+            });
           });
         });
 
@@ -51,24 +73,26 @@
             cart = fixture('CartWithItems');
           });
 
-          test('adds an item to the cart', function() {
+          test('the item gets added to the cart', function() {
             cart.addItem(newItem);
 
-            expect(cart.items.length).to.be.eq(3);
+            expect(cart.items.length).to.equal(3);
+            expect(cart.hasItem(newItem)).to.equal(true);
           });
 
-          test('recalculates a total', function() {
+          test('recalculates the total price', function() {
             cart.addItem(newItem);
 
-            expect(cart.total).to.be.eql(20);
+            expect(cart.total).to.equal(20);
           });
 
-          test('fires the "add-item" event', function() {
+          test('fires the "change" event', function() {
             return new Promise(function(resolve, reject) {
-              cart.addEventListener('add-item', function(e) {
+              cart.addEventListener('change', function(e) {
                 var resp = e.detail;
 
-                expect(resp.item).to.be.eql(newItem);
+                expect(resp.item).to.equal(newItem);
+                expect(resp.action).to.equal('add');
 
                 resolve();
               });
@@ -78,17 +102,18 @@
           });
         });
 
-        suite('when removing an item', function() {
+        suite('when removing the item from the cart', function() {
           var itemToBeRemoved = {id: 2};
 
           setup(function() {
             cart = fixture('CartWithItems');
           });
 
-          test('removes an item from the cart', function() {
+          test('the removed item is not in the cart anymore', function() {
             cart.removeItem(itemToBeRemoved);
 
-            expect(cart.items.length).to.be.eq(1)
+            expect(cart.items.length).to.equal(1);
+            expect(cart.hasItem(itemToBeRemoved)).to.equal(false);
           });
 
           test('recalculates a total', function() {
@@ -97,12 +122,13 @@
             expect(cart.total).to.be.eql(10);
           });
 
-          test('fires the "remove-item" event', function() {
+          test('fires the "change" event', function() {
             return new Promise(function(resolve, reject) {
-              cart.addEventListener('remove-item', function(e) {
+              cart.addEventListener('change', function(e) {
                 var resp = e.detail;
 
-                expect(resp.item).to.be.eql(itemToBeRemoved);
+                expect(resp.item).to.equal(itemToBeRemoved);
+                expect(resp.action).to.equal('remove');
 
                 resolve();
               });
@@ -111,16 +137,6 @@
             });
           });
 
-        });
-
-        suite('when a cart is empty', function() {
-          setup(function() {
-            cart = fixture('EmptyCart');
-          });
-
-          test('disables a cart', function() {
-            expect(cart.hasAttribute('disabled')).to.be.eql(true);
-          });
         });
       });
     </script>
