@@ -27,6 +27,10 @@ It is a simple [Polymer-based](https://www.polymer-project.org) element providin
  - provide any mechanism to store items of a shopping cart. Shopping cart synchronization can be developed in a number of different ways, therefore, it depends on an application.
  - work with a currency. There are [other elements](https://customelements.io/search/currency) providing such functionality.
 
+## Demo
+
+[Demo and documentation](http://dnesteryuk.github.io/stone-cart)
+
 ## Usage
 
 
