@@ -141,11 +141,11 @@
           });
 
           test('allows to get all add buttons of a specific item', function() {
-            expect(cart.queryForAddBtnsOf(1)).to.have.length(2);
+            expect(cart.allAddBtnsOf(1)).to.have.length(2);
           });
 
           test('allows to get all remove buttons of a specific item', function() {
-            expect(cart.queryForRemoveBtnsOf(1)).to.have.length(1);
+            expect(cart.allRemoveBtnsOf(1)).to.have.length(1);
           });
         });
 
@@ -157,7 +157,7 @@
           });
 
           test('the cart forgets about that button', function() {
-            expect(cart.queryForAddBtnsOf(1)).to.have.length(1);
+            expect(cart.allAddBtnsOf(1)).to.have.length(1);
           });
         });
       });
