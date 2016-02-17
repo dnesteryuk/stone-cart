@@ -39,13 +39,13 @@ $ bower install stone-cart --save
 
 ## Usage
 
-1. Add polyfill
+Add polyfill:
 
 ```html
 <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 ```
 
-2. Import custom element
+Import custom element:
 
 ```html
 <link rel="import" href="bower_components/stone-cart/stone-cart.html">
@@ -53,14 +53,14 @@ $ bower install stone-cart --save
 
 ## Development
 
-1. Install dependencies
+Install dependencies:
 
 ```
 $ npm install -g bower polyserve
 $ bower install
 ```
 
-2. Launch [Polyserve](https://github.com/polymerlabs/polyserve)
+Launch [Polyserve](https://github.com/polymerlabs/polyserve):
 
 ```
 $ polyserve
@@ -82,13 +82,13 @@ $ wct
 
 ## Update GitHub pages
 
-1. Install dependencies
+Install dependencies:
 
 ```
 $ npm install -g yo generator-polymer
 ```
 
-2. Pull changes
+Pull changes:
 
 ```
 $ yo polymer:gh
