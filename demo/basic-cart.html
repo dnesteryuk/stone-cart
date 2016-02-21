@@ -36,19 +36,19 @@
   <body>
 
     <template is="dom-bind">
-      <stone-cart items="{{items}}" total="{{total}}">
+      <stone-cart items="{{cartItems}}" total="{{total}}">
         <h3>Total price: <numbro-element value="[[total]]" format="0.0" currency></numbro-element></h3>
 
-        <h3>Products in cart ([[items.length]]):</h3>
+        <h3>Products in cart ([[cartItems.length]]):</h3>
 
-        <template id="items" is="dom-repeat" items="{{items}}">
+        <template id="items" is="dom-repeat" items="{{cartItems}}">
           <div>
 
             [[item.name]]
 
             <numbro-element value="[[item.price]]" format="0.0" currency></numbro-element>
 
-            <stone-cart-remove-btn item="[[item]]">
+            <stone-cart-remove-btn item="[[item]]" cart-items="{{cartItems}}">
               <button>Remove from cart</button>
             </stone-cart-remove-btn>
           </div>
@@ -59,21 +59,22 @@
         </div>
 
       </stone-cart>
+
+      <br><br>
+
+      <stone-cart-add-btn cart-items="{{cartItems}}" item='{"id":1,"name":"Apple","price":10}'>
+        <a href="#">Add apple to cart</a>
+      </stone-cart-add-btn>
+
+      <stone-cart-add-btn cart-items="{{cartItems}}" item='{"id":2,"name":"Cherry","price":20}'>
+        <a href="#">Add cherry to cart</a>
+      </stone-cart-add-btn>
+
+      <stone-cart-add-btn cart-items="{{cartItems}}" item='{"id":3,"name":"Pear","price":5}'>
+        <a href="#">Add pear to cart</a>
+      </stone-cart-add-btn>
+
     </template>
-
-    <br><br>
-
-    <stone-cart-add-btn item='{"id":1,"name":"Apple","price":10}'>
-      <a href="#">Add apple to cart</a>
-    </stone-cart-add-btn>
-
-    <stone-cart-add-btn item='{"id":2,"name":"Cherry","price":20}'>
-      <a href="#">Add cherry to cart</a>
-    </stone-cart-add-btn>
-
-    <stone-cart-add-btn item='{"id":3,"name":"Pear","price":5}'>
-      <a href="#">Add pear to cart</a>
-    </stone-cart-add-btn>
 
     <script>
       var products = [

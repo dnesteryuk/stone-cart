@@ -29,73 +29,48 @@ var StoneCartBtnBehavior = {
       notify:             true,
       reflectToAttribute: true,
       computed:           '_extractItemId(item)'
+    },
+
+    /**
+     * The list of items in the cart.
+     */
+    cartItems: {
+      type:   Array,
+      notify: true,
+      value:  function() { return []; }
     }
   },
 
-  attached: function() {
-    this.cart = document.querySelector('stone-cart');
-
-    if (this.cart) {
-      this._checkStatusInCart();
-
-      this._addCartListeners();
-    }
-    else {
-      throw 'The stone-cart element is not found';
-    }
-  },
-
-  detached: function() {
-    if (this.cart) {
-      this._removeCartListeners();
-    }
-
-    this.cart = null;
-  },
-
-  _itemSelected: function(action) {
-    this.set('selected', (action == 'add'));
-  },
-
-  /**
-   * Adds listeners to catch all changes in the cart.
-   */
-  _addCartListeners: function() {
-    this.cart.addEventListener(
-      'reset',
-      this._checkStatusInCart.bind(this)
-    );
-
-    this.cart.addEventListener(
-      'change',
-      this._listenToChangeInCart.bind(this)
-    );
-  },
-
-  _removeCartListeners: function() {
-    this.cart.removeEventListener(
-      'reset',
-      this._checkStatusInCart.bind(this)
-    );
-
-    this.cart.removeEventListener(
-      'change',
-      this._listenToChangeInCart.bind(this)
-    );
-  },
-
-  /**
-   * If a state of the item is changed in the cart,
-   * the button is notified.
-   */
-  _listenToChangeInCart: function(e) {
-    if (e.detail.item.id == this.item.id) {
-      this._itemSelected(e.detail.action);
-    }
-  },
+  observers: [
+    '_checkStatusInCart(cartItems, item)',
+    '_change(cartItems.splices, item)'
+  ],
 
   _checkStatusInCart: function() {
-    this.set('selected', this.cart.hasItem(this.item));
+    var index = StoneCartHelpers.indexOfItem(this.cartItems, this.item);
+
+    this.set('selected', index > -1);
+  },
+
+  _change: function(splices) {
+    if (splices && splices.indexSplices) {
+      var changes = splices.indexSplices[0];
+
+      if (changes.addedCount > 0) {
+        var changedItem = this.cartItems[changes.index];
+
+        if (changedItem.id == this.item.id) {
+          this.set('selected', true);
+        }
+      }
+      else {
+        changes.removed.map(function(changedItem) {
+          if (changedItem.id == this.item.id) {
+            this.set('selected', false);
+          }
+        }.bind(this));
+      }
+    }
   },
 
   _extractItemId: function(item) {

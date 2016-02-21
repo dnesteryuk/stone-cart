@@ -1,19 +1,18 @@
 <script src="btn-behavior.js"></script>
+<script src="../helpers.js"></script>
 
 <!--
-An element for adding an item to the cart. This element behaves like a wrapper for other elements providing the view. Hence, it can be used with any element you want.
+An element for adding an item to the cart. This element behaves like a wrapper for other elements providing the view. Hence, it can be used with any element you want. The list of cart items has to be shared with the button, otherwise, the item won't be added to the cart.
 
 Example:
 
-    <stone-cart-add-btn item='{"id":1, "name":"Book", "price":10.5}'>
+    <stone-cart-add-btn items="{{cartItems}}" item='{"id":1, "name":"Book", "price":10.5}'>
       <button>Add to cart</button>
     </stone-cart-add-btn>
 
-    <stone-cart-add-btn item='{"id":1, "name":"Book", "price":10.5}'>
+    <stone-cart-add-btn items="{{cartItems}}" item='{"id":1, "name":"Book", "price":10.5}'>
       <a href="#">Add to cart</a>
     </stone-cart-add-btn>
-
-This element can exist outside of the stone-cart element.
 -->
 <dom-module id="stone-cart-add-btn">
   <template>
@@ -40,15 +39,6 @@ This element can exist outside of the stone-cart element.
          */
         item: {
           type: Object
-        },
-
-        /**
-         * Indicates the type of the button.
-         */
-        kind: {
-          type:     String,
-          readOnly: true,
-          value:    'add'
         }
       },
 
@@ -64,7 +54,7 @@ This element can exist outside of the stone-cart element.
        * Adds the associated item to the cart.
        */
       addItem: function() {
-        this.cart.addItem(this.item);
+        this.push('cartItems', this.item);
       }
     });
   </script>

@@ -29,16 +29,15 @@
     </style>
   </head>
   <body>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <template is="dom-bind">
-            <stone-cart items="{{items}}" total="{{total}}" disabled="{{disabled}}">
+    <template is="dom-bind">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <stone-cart items="{{cartItems}}" total="{{total}}">
 
               <button class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="modal" data-target="#shoppingCart">
                 <numbro-element value="[[total]]" format="0.0" currency></numbro-element>
-                <span class="badge">[[items.length]]</span>
+                <span class="badge">[[cartItems.length]]</span>
               </button>
 
               <div class="modal fade" id="shoppingCart" tabindex="-1" role="dialog">
@@ -51,13 +50,13 @@
                     <div class="modal-body">
 
                       <ul class="list-group">
-                        <template id="items" is="dom-repeat" items="{{items}}">
+                        <template id="items" is="dom-repeat" items="{{cartItems}}">
                           <li class="list-group-item">
                             <img src="[[item.image_url]]">
 
                             [[item.name]] <numbro-element value="[[item.price]]" format="0.0" currency></numbro-element>
 
-                            <stone-cart-remove-btn item="[[item]]">
+                            <stone-cart-remove-btn cart-items="{{cartItems}}" item="[[item]]">
                               <button class="btn btn-warning pull-right" type="submit">Remove from cart</button>
                             </stone-cart-remove-btn>
 
@@ -72,54 +71,54 @@
               </div>
 
             </stone-cart>
-          </template>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <img src="http://placehold.it/100x100">
+            Apple
+            <numbro-element value="10" format="0.0" currency></numbro-element>
+
+            <stone-cart-add-btn cart-items="{{cartItems}}" item='{"id":1, "name": "Apple", "price":10, "image_url": "http://placehold.it/50x50"}'>
+              <button class="btn btn-primary" type="submit">Add to cart</button>
+            </stone-cart-add-btn>
+
+            <stone-cart-remove-btn cart-items="{{cartItems}}" item='{"id":1}'>
+              <button class="btn btn-warning" type="submit">Remove from cart</button>
+            </stone-cart-remove-btn>
+          </div>
+
+          <div class="col-md-4">
+            <img src="http://placehold.it/100x100">
+            Cherry
+            <numbro-element value="20" format="0.0" currency></numbro-element>
+
+            <stone-cart-add-btn cart-items="{{cartItems}}" item='{"id":2, "name": "Cherry", "price":20, "image_url": "http://placehold.it/50x50"}'>
+              <button class="btn btn-primary" type="submit">Add to cart</button>
+            </stone-cart-add-btn>
+
+            <stone-cart-remove-btn cart-items="{{cartItems}}" item='{"id":2}'>
+              <button class="btn btn-warning" type="submit">Remove from cart</button>
+            </stone-cart-remove-btn>
+          </div>
+
+          <div class="col-md-4">
+            <img src="http://placehold.it/100x100">
+            Pear
+            <numbro-element value="5" format="0.0" currency></numbro-element>
+
+            <stone-cart-add-btn cart-items="{{cartItems}}" item='{"id":3, "name": "Pear", "price":5, "image_url": "http://placehold.it/50x50"}'>
+              <button class="btn btn-primary" type="submit">Add to cart</button>
+            </stone-cart-add-btn>
+
+            <stone-cart-remove-btn cart-items="{{cartItems}}" item='{"id":3}'>
+              <button class="btn btn-warning" type="submit">Remove from cart</button>
+            </stone-cart-remove-btn>
+          </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-md-4">
-          <img src="http://placehold.it/100x100">
-          Apple
-          <numbro-element value="10" format="0.0" currency></numbro-element>
-
-          <stone-cart-add-btn item='{"id":1, "name": "Apple", "price":10, "image_url": "http://placehold.it/50x50"}'>
-            <button class="btn btn-primary" type="submit">Add to cart</button>
-          </stone-cart-add-btn>
-
-          <stone-cart-remove-btn item='{"id":1}'>
-            <button class="btn btn-warning" type="submit">Remove from cart</button>
-          </stone-cart-remove-btn>
-        </div>
-
-        <div class="col-md-4">
-          <img src="http://placehold.it/100x100">
-          Cherry
-          <numbro-element value="20" format="0.0" currency></numbro-element>
-
-          <stone-cart-add-btn item='{"id":2, "name": "Cherry", "price":20, "image_url": "http://placehold.it/50x50"}'>
-            <button class="btn btn-primary" type="submit">Add to cart</button>
-          </stone-cart-add-btn>
-
-          <stone-cart-remove-btn item='{"id":2}'>
-            <button class="btn btn-warning" type="submit">Remove from cart</button>
-          </stone-cart-remove-btn>
-        </div>
-
-        <div class="col-md-4">
-          <img src="http://placehold.it/100x100">
-          Pear
-          <numbro-element value="5" format="0.0" currency></numbro-element>
-
-          <stone-cart-add-btn item='{"id":3, "name": "Pear", "price":5, "image_url": "http://placehold.it/50x50"}'>
-            <button class="btn btn-primary" type="submit">Add to cart</button>
-          </stone-cart-add-btn>
-
-          <stone-cart-remove-btn item='{"id":3}'>
-            <button class="btn btn-warning" type="submit">Remove from cart</button>
-          </stone-cart-remove-btn>
-        </div>
-      </div>
-    </div>
+    </template>
 
     <script>
       document.addEventListener('WebComponentsReady', function() {

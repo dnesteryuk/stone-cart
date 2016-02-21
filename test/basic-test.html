@@ -53,6 +53,7 @@
 
           test('does not expose the empty attribute', function() {
             cart.items = items;
+
             expect(cart.hasAttribute('empty')).to.equal(false);
           });
 
@@ -124,11 +125,13 @@
           });
 
           test('fires the "change" event', function() {
+            var removedItem = cart.items[1];
+
             return new Promise(function(resolve, reject) {
               cart.addEventListener('change', function(e) {
                 var resp = e.detail;
 
-                expect(resp.item).to.equal(itemToBeRemoved);
+                expect(resp.item).to.equal(removedItem);
                 expect(resp.action).to.equal('remove');
 
                 resolve();

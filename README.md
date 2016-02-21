@@ -9,14 +9,14 @@ It is a simple [Polymer-based](https://www.polymer-project.org) element providin
     <template id="items" is="dom-repeat" items="{{items}}">
       [[item.name]] $[[item.price]]
 
-      <stone-cart-remove-btn item="{{item}}">
+      <stone-cart-remove-btn cart-items="{{items}}" item="{{item}}">
         <button>Remove from my cart</button>
       </stone-cart-remove-btn>
 
     </template>
   </stone-cart>
 
-  <stone-cart-add-btn item='{"id": 1, "name": "Apple", "price": "1"}'>
+  <stone-cart-add-btn cart-items="{{items}}" item='{"id": 1, "name": "Apple", "price": "1"}'>
     <button>Add apple to my cart</button>
   </stone-cart-add-btn>
 ```

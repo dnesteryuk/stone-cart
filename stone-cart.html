@@ -15,14 +15,14 @@ Example:
       <template id="items" is="dom-repeat" items="{{items}}">
         [[item.name]] $[[item.price]]
 
-        <stone-cart-remove-btn item="{{item}}">
+        <stone-cart-remove-btn cart-items="{{items}}" item="{{item}}">
           <button>Remove from cart</button>
         </stone-cart-remove-btn>
 
       </template>
     </stone-cart>
 
-    <stone-cart-add-btn item='{"id": 1, "name": "Apple", "price": "1"}'>
+    <stone-cart-add-btn cart-items="{{items}}" item='{"id": 1, "name": "Apple", "price": "1"}'>
       <button>Add apple to cart</button>
     </stone-cart-add-btn>
 
@@ -76,7 +76,7 @@ Example:
         },
 
         /**
-         * When the cart is empty, this property is true. This property
+         * It is true when the cart is empty. This property
          * is used as an attribute of the element.
          *
          * Example:
@@ -92,7 +92,8 @@ Example:
       },
 
       observers: [
-        '_fireReset(items)'
+        '_fireReset(items)',
+        '_fireChange(items.splices)'
       ],
 
       /**
@@ -102,8 +103,6 @@ Example:
        */
       addItem: function(item) {
         this.push('items', item);
-
-        this._fireChange({item: item, action: 'add'});
       },
 
       /**
@@ -116,8 +115,6 @@ Example:
         var index = StoneCartHelpers.indexOfItem(this.items, item);
 
         this.splice('items', index, 1);
-
-        this._fireChange({item: item, action: 'remove'});
       },
 
       /**
@@ -164,8 +161,26 @@ Example:
        *
        * @event change
        */
-      _fireChange: function(detail) {
-        this.fire('change', detail);
+      _fireChange: function(splices) {
+        if (splices) {
+          var changes = splices.indexSplices[0];
+
+          if (changes.addedCount > 0) {
+            var detail = {
+              item:   this.items[changes.index],
+              action: 'add'
+            };
+          }
+          else {
+            // FIXME: how do we deal with the situation when a lot of items are removed???
+            var detail = {
+              item:   changes.removed[0],
+              action: 'remove'
+            };
+          }
+
+          this.fire('change', detail);
+        }
       },
 
       _computeTotal: function(items) {

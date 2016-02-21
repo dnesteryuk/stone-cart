@@ -1,19 +1,18 @@
 <script src="btn-behavior.js"></script>
+<script src="../helpers.js"></script>
 
 <!--
-An element for removing the already added item from the cart. This element behaves like a wrapper for other elements providing the view. Hence, it can be used with any element you want.
+An element for removing the already added item from the cart. This element behaves like a wrapper for other elements providing the view. Hence, it can be used with any element you want. The list of cart items has to be shared with the button, otherwise, the item won't be added to the cart.
 
 Example:
 
-    <stone-cart-remove-btn item='{"id":1}'>
+    <stone-cart-remove-btn cart-items="{{cartItems}}" item='{"id":1}'>
       <button>Remove from cart</button>
     </stone-cart-remove-btn>
 
-    <stone-cart-remove-btn item='{"id":1}'>
+    <stone-cart-remove-btn cart-items="{{cartItems}}" item='{"id":1}'>
       <a href="#">Remove from cart</a>
     </stone-cart-remove-btn>
-
-This element can exist outside of the stone-cart element.
 -->
 <dom-module id="stone-cart-remove-btn">
   <template>
@@ -40,15 +39,6 @@ This element can exist outside of the stone-cart element.
          */
         item: {
           type: Object
-        },
-
-        /**
-         * Indicates the type of the button.
-         */
-        kind: {
-          type:     String,
-          readOnly: true,
-          value:    'remove'
         }
       },
 
@@ -64,7 +54,8 @@ This element can exist outside of the stone-cart element.
        * Removes the associated item from the cart.
        */
       removeItem: function() {
-        this.cart.removeItem(this.item);
+        var index = StoneCartHelpers.indexOfItem(this.cartItems, this.item);
+        this.splice('cartItems', index, 1);
       }
     });
   </script>
