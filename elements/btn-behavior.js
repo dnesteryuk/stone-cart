@@ -24,8 +24,9 @@ var BtnBehavior = {
      * Exposes the id of an item the button is associated with.
      */
     itemId: {
-      type:               Boolean,
-      value:              false,
+      type:               Object,
+      readOnly:           true,
+      notify:             true,
       reflectToAttribute: true,
       computed:           '_extractItemId(item)'
     }
@@ -85,7 +86,7 @@ var BtnBehavior = {
 
   /**
    * If a state of the item is changed in the cart,
-   * the button should be notified.
+   * the button is notified.
    */
   _listenToChangeInCart: function(e) {
     if (e.detail.item.id == this.item.id) {

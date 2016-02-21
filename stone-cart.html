@@ -3,11 +3,11 @@
 <link rel="import" href="elements/stone-cart-remove-btn.html">
 
 <!--
-It is an element providing the common logic for adding items to the shopping cart and managing them within it.
+It is a simple Polymer-based element providing the logic for building the shopping cart.
 
 Example:
 
-    <stone-cart items="{{items}}">
+    <stone-cart items="{{items}}" total="{{total}}">
       Total price: $[[total]]
 
       <template id="items" is="dom-repeat" items="{{items}}">
@@ -137,7 +137,7 @@ Example:
        *       {id: 1, price: 10, name: 'Book'}
        *     ];
        *
-       * @event setup
+       * @event reset
        */
       _fireReset: function() {
         this.fire('reset');

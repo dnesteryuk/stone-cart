@@ -39,18 +39,20 @@
         });
 
         suite('when defining items for the empty cart', function() {
+          var items = [{id: 1, price: 5}];
+
           setup(function() {
             cart = fixture('EmptyCart');
           });
 
           test('calculates the total price', function() {
-            cart.items = [{id: 1, price: 5}];
+            cart.items = items;
 
             expect(cart.total).to.equal(5);
           });
 
           test('enables the cart', function() {
-            cart.items = [{id: 1, price: 5}];
+            cart.items = items;
 
             expect(cart.hasAttribute('disabled')).to.equal(false);
           });
@@ -61,7 +63,7 @@
                 resolve();
               });
 
-              cart.items = [{id: 1, price: 5}];
+              cart.items = items;
             });
           });
         });
@@ -116,7 +118,7 @@
             expect(cart.hasItem(itemToBeRemoved)).to.equal(false);
           });
 
-          test('recalculates a total', function() {
+          test('recalculates the total price', function() {
             cart.removeItem(itemToBeRemoved);
 
             expect(cart.total).to.be.eql(10);
