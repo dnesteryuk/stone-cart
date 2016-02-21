@@ -4,7 +4,7 @@
   "authors": [
     "Dmitriy Nesteryuk <dmitriy.nesteryuk@gmail.com>"
   ],
-  "description": "An element providing a logic for building a shopping cart",
+  "description": "An element providing the logic for building the shopping cart",
   "keywords": [
     "web-component",
     "polymer",
@@ -12,7 +12,7 @@
     "cart"
   ],
   "main": "stone-cart.html",
-  "license": "https://github.com/dnesteryuk/stone-cart/LICENSE.txt",
+  "license": "https://opensource.org/licenses/MIT",
   "homepage": "https://github.com/dnesteryuk/stone-cart",
   "ignore": [
     "/.*",
