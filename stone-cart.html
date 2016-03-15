@@ -2,6 +2,8 @@
 <link rel="import" href="elements/stone-cart-add-btn.html">
 <link rel="import" href="elements/stone-cart-remove-btn.html">
 
+<script src="helpers.js"></script>
+
 <!--
 It is a simple Polymer-based element providing the logic for building the shopping cart.
 
@@ -111,7 +113,7 @@ Example:
        *     have only the id property.
        */
       removeItem: function(item) {
-        var index = this.items.indexOf(item);
+        var index = StoneCartHelpers.indexOfItem(this.items, item);
 
         this.splice('items', index, 1);
 
@@ -125,7 +127,7 @@ Example:
        * @param {Object} item The Object having the id property.
        */
       hasItem: function(item) {
-        return this.items.findIndex(function(i) { return i.id == item.id; }) > -1;
+        return StoneCartHelpers.indexOfItem(this.items, item) > -1;
       },
 
       /**
