@@ -79,17 +79,17 @@ Example:
          *
          * Example:
          *
-         *     <stone-cart disabled></stone-cart>
+         *     <stone-cart empty></stone-cart>
          */
-        disabled: {
+        empty: {
           type:               Boolean,
-          value:              true,
-          reflectToAttribute: true
+          reflectToAttribute: true,
+          computed:           '_computeEmpty(items, items.length)',
+          value:              true
         }
       },
 
       observers: [
-        '_updateState(items, items.length)',
         '_fireReset(items)'
       ],
 
@@ -172,8 +172,8 @@ Example:
         }, 0);
       },
 
-      _updateState: function(count) {
-        this.set('disabled', (count == 0));
+      _computeEmpty: function(items, count) {
+        return count == 0;
       }
     });
   </script>

@@ -126,7 +126,7 @@
         var cart = document.querySelector('stone-cart');
 
         cart.addEventListener('change', function() {
-          if (cart.disabled) {
+          if (cart.empty) {
             $('#shoppingCart').modal('hide');
           }
         });

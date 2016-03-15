@@ -3,7 +3,7 @@
  *
  * @polymerBehavior
  */
-var BtnBehavior = {
+var StoneCartBtnBehavior = {
   properties: {
     /**
      * Indicates whether the item is in the cart.
