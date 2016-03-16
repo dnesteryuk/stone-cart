@@ -1,6 +1,6 @@
 var StoneCartHelpers = {
   /**
-   * Finds the item by the id property in the given array
+   * Finds an item by the id property in a given array
    * and returns its index.
    */
   indexOfItem: function(items, item) {

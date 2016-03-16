@@ -1,7 +1,7 @@
 <script src="btn-behavior.js"></script>
 
 <!--
-An element for removing the already added item from the cart. This element behaves like a wrapper for other elements providing the view. Hence, it can be used with any element you want.
+An element for removing an already added item from the cart. This element behaves like a wrapper for other elements providing view. Hence, it can be used with any element.
 
 Example:
 
@@ -13,7 +13,7 @@ Example:
       <a href="#">Remove from cart</a>
     </stone-cart-remove-btn>
 
-This element can exist outside of the stone-cart element.
+This element could exist outside of the stone-cart element.
 -->
 <dom-module id="stone-cart-remove-btn">
   <template>
@@ -28,10 +28,9 @@ This element can exist outside of the stone-cart element.
 
       properties: {
         /**
-         * The item associated with the button.
-         * The given item will be used to find the corresponding item
-         * in the cart to remove it. The item can
-         * have only the id property.
+         * Any object having the id property.
+         * It is used to find an item with a corresponding id
+         * in the cart and remove it.
          *
          * Example:
          *

@@ -8,6 +8,7 @@
     <link rel="stylesheet" media="all" href="../../bootstrap/dist/css/bootstrap.min.css" />
 
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+
     <script src="../../jquery/dist/jquery.min.js"></script>
     <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
 
@@ -34,7 +35,7 @@
       <div class="row">
         <div class="col-md-12">
           <template is="dom-bind">
-            <stone-cart items="{{items}}" total="{{total}}" disabled="{{disabled}}">
+            <stone-cart items="{{items}}" total="{{total}}">
 
               <button class="btn btn-default dropdown-toggle pull-right" type="button" data-toggle="modal" data-target="#shoppingCart">
                 <numbro-element value="[[total]]" format="0.0" currency></numbro-element>

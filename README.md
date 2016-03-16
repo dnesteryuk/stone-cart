@@ -1,6 +1,6 @@
 # Stone cart
 
-It is a simple [Polymer-based](https://www.polymer-project.org) element providing the logic for building the shopping cart.
+It is a [Polymer-based](https://www.polymer-project.org) element providing logic for building the shopping cart.
 
 ```html
   <stone-cart items="{{items}}" total="{{total}}">
@@ -25,7 +25,7 @@ It is a simple [Polymer-based](https://www.polymer-project.org) element providin
 
  - provide any HTML structure for the shopping cart. People use different front-end frameworks, therefore, it doesn't make any sense to couple this element with any of them.
  - provide any mechanism to store items of the shopping cart. Shopping cart synchronization can be developed in a number of ways, therefore, it depends on an application.
- - work with the currency. There are [other elements](https://customelements.io/search/currency) providing such functionality.
+ - work with currency. There are [other elements](https://customelements.io/search/currency) providing such functionality.
 
 ## Demo
 
@@ -51,6 +51,10 @@ Import custom element:
 <link rel="import" href="bower_components/stone-cart/stone-cart.html">
 ```
 
+## Related elements
+
+ - [stone-cart-ajax](/dnesteryuk/stone-cart-ajax) - provides a mechanism for storing the shopping cart via Ajax.
+
 ## Development
 
 Install dependencies:
@@ -66,7 +70,7 @@ Launch [Polyserve](https://github.com/polymerlabs/polyserve):
 $ polyserve
 ```
 
-## Testing
+### Testing
 
 Install:
 
@@ -80,7 +84,7 @@ Run tests:
 $ wct
 ```
 
-## Update GitHub pages
+### Update GitHub pages
 
 Install dependencies:
 

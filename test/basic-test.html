@@ -7,11 +7,9 @@
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <!-- Step 1: import the element to test -->
     <link rel="import" href="../stone-cart.html">
   </head>
   <body>
-
     <test-fixture id="EmptyCart">
       <template>
         <stone-cart></stone-cart>
@@ -56,14 +54,12 @@
             expect(cart.hasAttribute('empty')).to.equal(false);
           });
 
-          test('fires the "reset" event', function() {
-            return new Promise(function(resolve, reject) {
-              cart.addEventListener('reset', function(e) {
-                resolve();
-              });
-
-              cart.items = items;
+          test('fires the "reset" event', function(done) {
+            cart.addEventListener('reset', function(e) {
+              done();
             });
+
+            cart.items = items;
           });
         });
 
@@ -74,10 +70,10 @@
             cart = fixture('CartWithItems');
           });
 
-          test('the item gets added to the cart', function() {
+          test('an item gets added to the cart', function() {
             cart.addItem(newItem);
 
-            expect(cart.items.length).to.equal(3);
+            expect(cart.items).to.have.length(3);
             expect(cart.hasItem(newItem)).to.equal(true);
           });
 
@@ -87,33 +83,31 @@
             expect(cart.total).to.equal(20);
           });
 
-          test('fires the "change" event', function() {
-            return new Promise(function(resolve, reject) {
-              cart.addEventListener('change', function(e) {
-                var resp = e.detail;
+          test('fires the "change" event', function(done) {
+            cart.addEventListener('change', function(e) {
+              var resp = e.detail;
 
-                expect(resp.item).to.equal(newItem);
-                expect(resp.action).to.equal('add');
+              expect(resp.item).to.equal(newItem);
+              expect(resp.action).to.equal('add');
 
-                resolve();
-              });
-
-              cart.addItem(newItem);
+              done();
             });
+
+            cart.addItem(newItem);
           });
         });
 
-        suite('when removing the item from the cart', function() {
+        suite('when removing an item from the cart', function() {
           var itemToBeRemoved = {id: 2};
 
           setup(function() {
             cart = fixture('CartWithItems');
           });
 
-          test('the removed item is not in the cart anymore', function() {
+          test('an item is not in the cart anymore', function() {
             cart.removeItem(itemToBeRemoved);
 
-            expect(cart.items.length).to.equal(1);
+            expect(cart.items).to.have.length(1);
             expect(cart.hasItem(itemToBeRemoved)).to.equal(false);
           });
 
@@ -123,21 +117,20 @@
             expect(cart.total).to.be.eql(10);
           });
 
-          test('fires the "change" event', function() {
-            return new Promise(function(resolve, reject) {
-              cart.addEventListener('change', function(e) {
-                var resp = e.detail;
+          test('fires the "change" event', function(done) {
+            var removedItem = cart.items[1];
 
-                expect(resp.item).to.equal(itemToBeRemoved);
-                expect(resp.action).to.equal('remove');
+            cart.addEventListener('change', function(e) {
+              var resp = e.detail;
 
-                resolve();
-              });
+              expect(resp.item).to.equal(removedItem);
+              expect(resp.action).to.equal('remove');
 
-              cart.removeItem(itemToBeRemoved);
+              done();
             });
-          });
 
+            cart.removeItem(itemToBeRemoved);
+          });
         });
       });
     </script>

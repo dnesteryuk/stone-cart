@@ -6,8 +6,8 @@
 var StoneCartBtnBehavior = {
   properties: {
     /**
-     * Indicates whether the item is in the cart.
-     * It is true if it is in the cart.
+     * Indicates whether an item is in the cart.
+     * if true, it is in the cart.
      *
      * Example:
      *
@@ -49,8 +49,6 @@ var StoneCartBtnBehavior = {
     if (this.cart) {
       this._removeCartListeners();
     }
-
-    this.cart = null;
   },
 
   _itemSelected: function(action) {
@@ -85,8 +83,8 @@ var StoneCartBtnBehavior = {
   },
 
   /**
-   * If a state of the item is changed in the cart,
-   * the button is notified.
+   * If a state of an item is changed in the cart,
+   * the button gets notified.
    */
   _listenToChangeInCart: function(e) {
     if (e.detail.item.id == this.item.id) {

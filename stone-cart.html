@@ -5,7 +5,7 @@
 <script src="helpers.js"></script>
 
 <!--
-It is a simple Polymer-based element providing the logic for building the shopping cart.
+It is a simple Polymer-based element providing logic for building the shopping cart.
 
 Example:
 
@@ -59,9 +59,9 @@ Example:
          *     }]
          */
         items: {
-          type:   Object,
-          notify: true,
-          value:  function() { return []; }
+          type:     Object,
+          value:    function() { return []; },
+          notify:   true
         },
 
         /**
@@ -69,14 +69,14 @@ Example:
          */
         total: {
           type:     Number,
+          value:    0,
           notify:   true,
           readOnly: true,
-          computed: '_computeTotal(items, items.length)',
-          value:    0
+          computed: '_computeTotal(items, items.length)'
         },
 
         /**
-         * When the cart is empty, this property is true. This property
+         * If true, the cart is empty. This property
          * is used as an attribute of the element.
          *
          * Example:
@@ -85,14 +85,16 @@ Example:
          */
         empty: {
           type:               Boolean,
+          value:              true,
+          notify:             true,
           reflectToAttribute: true,
-          computed:           '_computeEmpty(items, items.length)',
-          value:              true
+          computed:           '_computeEmpty(items, items.length)'
         }
       },
 
       observers: [
-        '_fireReset(items)'
+        '_fireReset(items)',
+        '_fireChange(items.splices)'
       ],
 
       /**
@@ -102,36 +104,32 @@ Example:
        */
       addItem: function(item) {
         this.push('items', item);
-
-        this._fireChange({item: item, action: 'add'});
       },
 
       /**
        * Removes the item from the cart.
        *
-       * @param {Object} item The item to be removed from the cart. It could
-       *     have only the id property.
+       * @param {Object} item The item to be removed from the cart. Object having only
+       *                      the id property could be provided. Other properties are not *                      required to find an item.
        */
       removeItem: function(item) {
         var index = StoneCartHelpers.indexOfItem(this.items, item);
 
         this.splice('items', index, 1);
-
-        this._fireChange({item: item, action: 'remove'});
       },
 
       /**
-       * Returns true if the given item is in the cart.
+       * Returns true if a given item is in the cart.
        * Otherwise, false.
        *
-       * @param {Object} item The Object having the id property.
+       * @param {Object} item Object having the id property.
        */
       hasItem: function(item) {
         return StoneCartHelpers.indexOfItem(this.items, item) > -1;
       },
 
       /**
-       * Fires the `reset` event when the list of items is reset.
+       * Fires the `reset` event when a list of items is reset.
        *
        * Example:
        *
@@ -147,7 +145,7 @@ Example:
 
       /**
        * Fires the `change` event when the cart gets changed.
-       * The event keeps the item and action related to the change.
+       * The event keeps an item and action related to a change.
        * There are 2 types of actions:
        *
        *  - add - a new item is added to the cart
@@ -164,8 +162,24 @@ Example:
        *
        * @event change
        */
-      _fireChange: function(detail) {
-        this.fire('change', detail);
+      _fireChange: function(splices) {
+        if (splices) {
+          var changes = splices.indexSplices[0];
+
+          if (changes.addedCount > 0) {
+            var detail = {
+              item:   this.items[changes.index],
+              action: 'add'
+            };
+          }
+          else {
+            var detail = {
+              item:   changes.removed[0],
+              action: 'remove'
+            };
+          }
+          this.fire('change', detail);
+        }
       },
 
       _computeTotal: function(items) {

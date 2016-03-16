@@ -29,15 +29,14 @@
             cart = fixture('CartWithAddBtn');
           });
 
-          test('the button exposes the id of the related item', function() {
+          test('the button exposes the id of a related item', function() {
             expect(
               cart.querySelector('stone-cart-add-btn').itemId
             ).to.equal(1);
           });
         });
 
-
-        suite('when adding the item to the cart', function() {
+        suite('when adding an item to the cart', function() {
           setup(function() {
             cart = fixture('CartWithAddBtn');
             cart.addItem({id: 1});
@@ -50,7 +49,7 @@
           });
         });
 
-        suite('when the item is already in the cart', function() {
+        suite('when an item is already in the cart', function() {
           setup(function() {
             cart = fixture('CartWithAddBtn');
             cart.items = [{id: 1}];
