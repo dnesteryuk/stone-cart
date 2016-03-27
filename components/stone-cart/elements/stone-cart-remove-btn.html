@@ -1,0 +1,70 @@
+<script src="btn-behavior.js"></script>
+
+<!--
+An element for removing an already added item from the cart. This element behaves like a wrapper for other elements providing view. Hence, it can be used with any element.
+
+Example:
+
+    <stone-cart-remove-btn item='{"id":1}'>
+      <button>Remove from cart</button>
+    </stone-cart-remove-btn>
+
+    <stone-cart-remove-btn item='{"id":1}'>
+      <a href="#">Remove from cart</a>
+    </stone-cart-remove-btn>
+
+This element could exist outside of the stone-cart element.
+-->
+<dom-module id="stone-cart-remove-btn">
+  <template>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'stone-cart-remove-btn',
+
+      behaviors: [StoneCartBtnBehavior],
+
+      properties: {
+        /**
+         * Any object having the id property.
+         * It is used to find an item with a corresponding id
+         * in the cart and remove it.
+         *
+         * Example:
+         *
+         *     <stone-cart-remove-btn item='{"id": 1}'>
+         *     </stone-cart-remove-btn>
+         */
+        item: {
+          type: Object
+        },
+
+        /**
+         * Indicates the type of the button.
+         */
+        kind: {
+          type:     String,
+          readOnly: true,
+          value:    'remove'
+        }
+      },
+
+      listeners: {
+        /**
+         * Calls the removeItem method if the tap event is
+         * fired on the button.
+         */
+        tap: 'removeItem'
+      },
+
+      /**
+       * Removes the associated item from the cart.
+       */
+      removeItem: function() {
+        this.cart.removeItem(this.item);
+      }
+    });
+  </script>
+</dom-module>

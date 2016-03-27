@@ -1,0 +1,196 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="elements/stone-cart-add-btn.html">
+<link rel="import" href="elements/stone-cart-remove-btn.html">
+
+<script src="helpers.js"></script>
+
+<!--
+It is a simple Polymer-based element providing logic for building the shopping cart.
+
+Example:
+
+    <stone-cart items="{{items}}" total="{{total}}">
+      Total price: $[[total]]
+
+      <template id="items" is="dom-repeat" items="{{items}}">
+        [[item.name]] $[[item.price]]
+
+        <stone-cart-remove-btn item="{{item}}">
+          <button>Remove from cart</button>
+        </stone-cart-remove-btn>
+
+      </template>
+    </stone-cart>
+
+    <stone-cart-add-btn item='{"id": 1, "name": "Apple", "price": "1"}'>
+      <button>Add apple to cart</button>
+    </stone-cart-add-btn>
+
+@demo demo/index.html
+-->
+
+<dom-module id="stone-cart">
+  <template>
+    <style>
+      :host {
+      }
+    </style>
+
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'stone-cart',
+
+      properties: {
+        /**
+         * List of items in the cart.
+         * Each item has to have the id and price properties. Other properties
+         * can be used without any restrictions.
+         *
+         * Example:
+         *
+         *     [{
+         *       id: 1,
+         *       price: 10,
+         *       name: 'Book',
+         *       img_src: '/images/book.png'
+         *     }]
+         */
+        items: {
+          type:     Object,
+          value:    function() { return []; },
+          notify:   true
+        },
+
+        /**
+         * The total price of items in the cart.
+         */
+        total: {
+          type:     Number,
+          value:    0,
+          notify:   true,
+          readOnly: true,
+          computed: '_computeTotal(items, items.length)'
+        },
+
+        /**
+         * If true, the cart is empty. This property
+         * is used as an attribute of the element.
+         *
+         * Example:
+         *
+         *     <stone-cart empty></stone-cart>
+         */
+        empty: {
+          type:               Boolean,
+          value:              true,
+          notify:             true,
+          reflectToAttribute: true,
+          computed:           '_computeEmpty(items, items.length)'
+        }
+      },
+
+      observers: [
+        '_fireReset(items)',
+        '_fireChange(items.splices)'
+      ],
+
+      /**
+       * Adds a new item to the cart.
+       *
+       * @param {Object} item The item to be added to the cart.
+       */
+      addItem: function(item) {
+        this.push('items', item);
+      },
+
+      /**
+       * Removes the item from the cart.
+       *
+       * @param {Object} item The item to be removed from the cart. Object having only
+       *                      the id property could be provided. Other properties are not *                      required to find an item.
+       */
+      removeItem: function(item) {
+        var index = StoneCartHelpers.indexOfItem(this.items, item);
+
+        this.splice('items', index, 1);
+      },
+
+      /**
+       * Returns true if a given item is in the cart.
+       * Otherwise, false.
+       *
+       * @param {Object} item Object having the id property.
+       */
+      hasItem: function(item) {
+        return StoneCartHelpers.indexOfItem(this.items, item) > -1;
+      },
+
+      /**
+       * Fires the `reset` event when a list of items is reset.
+       *
+       * Example:
+       *
+       *     document.querySelector('stone-cart').items = [
+       *       {id: 1, price: 10, name: 'Book'}
+       *     ];
+       *
+       * @event reset
+       */
+      _fireReset: function() {
+        this.fire('reset');
+      },
+
+      /**
+       * Fires the `change` event when the cart gets changed.
+       * The event keeps an item and action related to a change.
+       * There are 2 types of actions:
+       *
+       *  - add - a new item is added to the cart
+       *  - remove - an item is removed from the cart
+       *
+       * Example:
+       *
+       *     var cart = document.querySelector('stone-cart');
+       *
+       *     car.addEventListener('change', function(e) {
+       *       e.detail.item // the item related to the change
+       *       e.detail.action // the action indicating the kind of the change
+       *     });
+       *
+       * @event change
+       */
+      _fireChange: function(splices) {
+        if (splices) {
+          var changes = splices.indexSplices[0];
+
+          if (changes.addedCount > 0) {
+            var detail = {
+              item:   this.items[changes.index],
+              action: 'add'
+            };
+          }
+          else {
+            var detail = {
+              item:   changes.removed[0],
+              action: 'remove'
+            };
+          }
+          this.fire('change', detail);
+        }
+      },
+
+      _computeTotal: function(items) {
+        return items.reduce(function(total, item) {
+          return total + item.price;
+        }, 0);
+      },
+
+      _computeEmpty: function(items, count) {
+        return count == 0;
+      }
+    });
+  </script>
+</dom-module>

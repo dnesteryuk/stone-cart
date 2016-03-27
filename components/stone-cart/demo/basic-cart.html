@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>Basic Stone Cart Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../../numbro-element/numbro-element.html">
+    <link rel="import" href="../stone-cart.html">
+
+    <style>
+      .msg-empty-cart {
+        display: none;
+      }
+
+      stone-cart[empty] .msg-empty-cart {
+        display: block;
+      }
+
+      stone-cart {
+        border: 2px grey solid;
+        display: block;
+        width: 400px;
+        padding: 15px;
+      }
+
+      stone-cart-add-btn[selected] {
+        display: none;
+      }
+
+      stone-cart-add-btn {
+        padding-right: 20px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <template is="dom-bind">
+      <stone-cart items="{{items}}" total="{{total}}">
+        <h3>Total price: <numbro-element value="[[total]]" format="0.0" currency></numbro-element></h3>
+
+        <h3>Products in cart ([[items.length]]):</h3>
+
+        <template id="items" is="dom-repeat" items="{{items}}">
+          <div>
+
+            [[item.name]]
+
+            <numbro-element value="[[item.price]]" format="0.0" currency></numbro-element>
+
+            <stone-cart-remove-btn item="[[item]]">
+              <button>Remove from cart</button>
+            </stone-cart-remove-btn>
+          </div>
+        </template>
+
+        <div class="msg-empty-cart">
+          Your cart is empty.
+        </div>
+
+      </stone-cart>
+    </template>
+
+    <br><br>
+
+    <stone-cart-add-btn item='{"id":1,"name":"Apple","price":10}'>
+      <a href="#">Add apple to cart</a>
+    </stone-cart-add-btn>
+
+    <stone-cart-add-btn item='{"id":2,"name":"Cherry","price":20}'>
+      <a href="#">Add cherry to cart</a>
+    </stone-cart-add-btn>
+
+    <stone-cart-add-btn item='{"id":3,"name":"Pear","price":5}'>
+      <a href="#">Add pear to cart</a>
+    </stone-cart-add-btn>
+
+    <script>
+      var products = [
+        {id: 1, name: 'Apple', price: 10},
+        {id: 2, name: 'Cherry', price: 20}
+      ];
+
+      document.addEventListener('WebComponentsReady', function() {
+        document.querySelector('stone-cart').items = products;
+      });
+    </script>
+
+  </body>
+</html>
